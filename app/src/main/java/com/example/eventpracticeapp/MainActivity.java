@@ -1,6 +1,8 @@
 package com.example.eventpracticeapp;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -8,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,16 +18,15 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextAge;
     private Button buttonSubmit;
     private TextView textViewResult;
+    private View rootView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize views
         initializeViews();
-        
-        // Set up event handling
+
         setupEventHandling();
     }
 
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         editTextAge = findViewById(R.id.editTextAge);
         buttonSubmit = findViewById(R.id.buttonSubmit);
         textViewResult = findViewById(R.id.textViewResult);
+        rootView = findViewById(android.R.id.content);
     }
 
     private void setupEventHandling() {
@@ -42,30 +45,82 @@ public class MainActivity extends AppCompatActivity {
                 handleSubmitButtonClick();
             }
         });
+
+        setupInputValidation();
+    }
+
+    private void setupInputValidation() {
+        editTextName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                clearFieldError(editTextName);
+                
+                if (s.length() > 0) {
+                    if (!s.toString().matches("^[a-zA-Z\\s]+$")) {
+                        showFieldError(editTextName, "Name should contain only letters and spaces");
+                    } else if (s.length() < 2) {
+                        showFieldError(editTextName, "Name should be at least 2 characters");
+                    } else {
+                        showFieldSuccess(editTextName, "Name looks good!");
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        editTextAge.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                clearFieldError(editTextAge);
+
+                if (s.length() > 0) {
+                    try {
+                        int age = Integer.parseInt(s.toString());
+                        if (age < 0) {
+                            showFieldError(editTextAge, "Age cannot be negative");
+                        } else if (age > 120) {
+                            showFieldError(editTextAge, "Please enter a realistic age (0-120)");
+                        } else {
+                            showFieldSuccess(editTextAge, "Age looks good!");
+                        }
+                    } catch (NumberFormatException e) {
+                        showFieldError(editTextAge, "Please enter a valid number");
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
     }
 
     private void handleSubmitButtonClick() {
-        // Get input values
         String name = editTextName.getText().toString().trim();
         String ageString = editTextAge.getText().toString().trim();
 
-        // Clear any previous error highlights
         clearErrorHighlights();
 
-        // Validate input - Show Toast message if fields are empty
         if (isInputValid(name, ageString)) {
             // Use try-catch block to handle invalid inputs (e.g., non-numeric age)
             try {
-                // Parse age and display result
                 int age = Integer.parseInt(ageString);
                 displayResult(name, age);
                 
-                // Show success toast
+                // Show success feedback with both Toast and Snackbar
                 showSuccessToast("Information submitted successfully!");
+                showSnackbar("Data saved successfully!", false);
                 
             } catch (NumberFormatException e) {
-                // Handle invalid age input
                 showErrorToast("Please enter a valid age number.");
+                showSnackbar("Invalid age format. Please enter a number.", true);
                 highlightErrorField(editTextAge);
                 textViewResult.setText("Your result will appear here...");
             }
@@ -73,17 +128,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isInputValid(String name, String ageString) {
-        // Check if fields are empty - Show Toast message if fields are empty
         if (name.isEmpty() || ageString.isEmpty()) {
             showErrorToast("Please fill in all fields.");
+            showSnackbar("All fields are required!", true);
             textViewResult.setText("Your result will appear here...");
             highlightEmptyFields(name, ageString);
             return false;
         }
         
-        // Check if name contains only letters and spaces
         if (!name.matches("^[a-zA-Z\\s]+$")) {
             showErrorToast("Name should contain only letters and spaces.");
+            showSnackbar("Invalid name format. Use only letters and spaces.", true);
             textViewResult.setText("Your result will appear here...");
             highlightErrorField(editTextName);
             return false;
@@ -93,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayResult(String name, int age) {
-        // Validate age range
         if (age < 0) {
             showErrorToast("Age cannot be negative. Please enter a valid age.");
             highlightErrorField(editTextAge);
@@ -108,13 +162,11 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // Create simple result message
         String resultMessage = "Hello " + name + "!\n\n" +
                              "You are " + age + " years old.\n\n" +
                              "Age Category: " + getAgeCategory(age) + "\n\n" +
                              "Information validated successfully!";
-        
-        // Display result with success color
+
         textViewResult.setText(resultMessage);
         textViewResult.setTextColor(ContextCompat.getColor(this, R.color.success_color));
     }
@@ -125,6 +177,38 @@ public class MainActivity extends AppCompatActivity {
 
     private void showSuccessToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    // Demonstrate instant feedback through Snackbar messages
+    private void showSnackbar(String message, boolean isError) {
+        Snackbar snackbar = Snackbar.make(rootView, message, Snackbar.LENGTH_LONG);
+        
+        if (isError) {
+            snackbar.setBackgroundTint(ContextCompat.getColor(this, R.color.danger_color));
+        } else {
+            snackbar.setBackgroundTint(ContextCompat.getColor(this, R.color.success_color));
+        }
+        
+        snackbar.show();
+    }
+
+    private void showFieldError(EditText field, String message) {
+        field.setBackgroundColor(ContextCompat.getColor(this, R.color.danger_color));
+        field.setAlpha(0.7f);
+        
+        showSnackbar(message, true);
+    }
+
+    private void showFieldSuccess(EditText field, String message) {
+        field.setBackgroundColor(ContextCompat.getColor(this, R.color.success_color));
+        field.setAlpha(0.8f);
+        
+        showSnackbar(message, false);
+    }
+
+    private void clearFieldError(EditText field) {
+        field.setBackground(ContextCompat.getDrawable(this, R.drawable.input_background));
+        field.setAlpha(1.0f);
     }
 
     private void highlightEmptyFields(String name, String ageString) {
@@ -140,7 +224,6 @@ public class MainActivity extends AppCompatActivity {
         field.setBackgroundColor(ContextCompat.getColor(this, R.color.danger_color));
         field.setAlpha(0.7f);
         
-        // Clear error highlight after 2 seconds
         field.postDelayed(new Runnable() {
             @Override
             public void run() {

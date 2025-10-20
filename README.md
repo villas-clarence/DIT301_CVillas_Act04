@@ -90,3 +90,4 @@ Screenshots demonstrating both correct and invalid input scenarios can be found 
 - **Minimum SDK**: API 24 (Android 7.0)
 - **Target SDK**: API 34 (Android 14)
 - **Build Tool**: Gradle 8.0
+
