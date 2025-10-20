@@ -1,0 +1,31 @@
+R_DEF: Internal format may change without notice
+local
+color border_color
+color danger_color
+color dark_color
+color info_color
+color light_color
+color primary_color
+color primary_dark
+color secondary_color
+color success_color
+color text_muted
+color warning_color
+color white
+drawable button_gradient
+drawable card_background
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+drawable input_background
+id buttonSubmit
+id editTextAge
+id editTextName
+id textViewResult
+layout activity_main
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+style Base.Theme.EventPracticeApp
+style Theme.EventPracticeApp
+xml backup_rules
+xml data_extraction_rules
