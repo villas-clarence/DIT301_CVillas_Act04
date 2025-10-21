@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                     } else if (s.length() < 2) {
                         showFieldError(editTextName, "Name should be at least 2 characters");
                     } else {
-                        showFieldSuccess(editTextName, "Name looks good!");
+                        showFieldSuccess(editTextName, "Name looks good");
                     }
                 }
             }
