@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Base.Theme.EventPracticeApp" parent="Theme.Material3.DayNight">
+        
+        <item name="colorPrimary">@color/primary_color</item>
+        <item name="colorPrimaryContainer">@color/primary_dark</item>
+        <item name="colorSecondary">@color/secondary_color</item>
+        <item name="colorSecondaryContainer">@color/secondary_color</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSurface">@color/dark_color</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="android:colorBackground">@color/dark_color</item>
+        <item name="android:statusBarColor">@color/primary_dark</item>
+        <item name="android:navigationBarColor">@color/dark_color</item>
+    </style>
+</resources>

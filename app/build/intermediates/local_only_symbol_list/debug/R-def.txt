@@ -20,6 +20,11 @@ drawable input_background
 id buttonSubmit
 id editTextAge
 id editTextName
+id formLayout
+id headerLayout
+id labelAge
+id labelName
+id resultLayout
 id textViewResult
 layout activity_main
 mipmap ic_launcher
