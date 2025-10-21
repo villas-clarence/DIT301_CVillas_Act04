@@ -13,5 +13,7 @@
         <item name="android:colorBackground">@color/dark_color</item>
         <item name="android:statusBarColor">@color/primary_dark</item>
         <item name="android:navigationBarColor">@color/dark_color</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">sans-serif-medium</item>
     </style>
 </resources>

@@ -5,9 +5,9 @@
     <color name="dark_color">#111827</color>
     <color name="info_color">#06B6D4</color>
     <color name="light_color">#F3F4F6</color>
-    <color name="primary_color">#4F46E5</color>
-    <color name="primary_dark">#3730A3</color>
-    <color name="secondary_color">#14B8A6</color>
+    <color name="primary_color">#E91E63</color>
+    <color name="primary_dark">#C2185B</color>
+    <color name="secondary_color">#FFC107</color>
     <color name="success_color">#22C55E</color>
     <color name="text_muted">#6B7280</color>
     <color name="warning_color">#F59E0B</color>
@@ -26,6 +26,8 @@
         <item name="android:colorBackground">@color/light_color</item>
         <item name="android:statusBarColor">@color/primary_dark</item>
         <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">sans-serif-medium</item>
     </style>
     <style name="Theme.EventPracticeApp" parent="Base.Theme.EventPracticeApp"/>
 </resources>
